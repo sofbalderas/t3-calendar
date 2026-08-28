@@ -3,9 +3,8 @@
 App de calendario de contenido para Instagram de **Transforma 3**, construida con React + Vite y Supabase como base de datos en tiempo real. Incluye:
 
 - **Calendario** mensual con las publicaciones por fecha.
-- **Vista por plataforma** (Instagram, con TikTok/Facebook listos para activarse a futuro) agrupada por semana, con filtro por pilar/estatus y cambio rápido de estatus de producción.
 - **Estadísticas** con balance de pilares (Pilar A / Pilar B / Newsletter), cadencia semanal, formatos producidos y estatus de producción.
-- Botón **"Generar ritmo"** que crea automáticamente el esquema fijo semanal del plan de estrategia (martes = Pilar A · Reel, jueves = Pilar B · Carrusel, domingo = Newsletter).
+
 - Colores de marca tomados del material de campaña (carbón, mostaza, crema, salvia y vino).
 
 ---
