@@ -8,7 +8,6 @@ import { usePosts } from './lib/usePosts'
 
 const TABS = [
   { id: 'calendar', label: 'Calendario' },
-  { id: 'platform', label: 'Instagram' },
   { id: 'stats', label: 'Estadísticas' },
 ]
 
