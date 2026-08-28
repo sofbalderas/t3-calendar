@@ -14,7 +14,18 @@ import { es } from 'date-fns/locale'
 import { MONTH_LABELS, PILLAR_MAP, WEEKDAY_LABELS } from '../lib/constants'
 
 export default function CalendarView({ posts, onDayClick, onPostClick }) {
-  const [cursor, setCursor] = useState(new Date())
+  // Abre directamente en el mes más próximo que tenga contenido cargado
+  // (hoy o el más cercano hacia adelante), en vez de siempre el mes actual.
+  const [cursor, setCursor] = useState(() => {
+    if (posts && posts.length) {
+      const todayStr = format(new Date(), 'yyyy-MM-dd')
+      const sorted = [...posts].sort((a, b) => (a.scheduled_date > b.scheduled_date ? 1 : -1))
+      const upcoming = sorted.find((p) => p.scheduled_date >= todayStr)
+      const target = upcoming ?? sorted[sorted.length - 1]
+      if (target?.scheduled_date) return new Date(target.scheduled_date + 'T00:00:00')
+    }
+    return new Date()
+  })
 
   const days = useMemo(() => {
     const start = startOfWeek(startOfMonth(cursor), { weekStartsOn: 0 })
