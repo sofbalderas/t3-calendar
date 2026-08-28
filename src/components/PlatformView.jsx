@@ -1,19 +1,17 @@
 import { useMemo, useState } from 'react'
 import { format, startOfWeek } from 'date-fns'
-import { FORMATS, PILLAR_MAP, PLATFORMS, STATUS_MAP, STATUSES } from '../lib/constants'
+import { FORMATS, PILLAR_MAP, PLATFORMS } from '../lib/constants'
 
-export default function PlatformView({ posts, onPostClick, onStatusChange }) {
+export default function PlatformView({ posts, onPostClick }) {
   const [activePlatform, setActivePlatform] = useState('instagram')
   const [pillarFilter, setPillarFilter] = useState('all')
-  const [statusFilter, setStatusFilter] = useState('all')
 
   const filtered = useMemo(() => {
     return posts
       .filter((p) => (p.platform ?? 'instagram') === activePlatform)
       .filter((p) => pillarFilter === 'all' || p.pillar === pillarFilter)
-      .filter((p) => statusFilter === 'all' || p.status === statusFilter)
       .sort((a, b) => (a.scheduled_date > b.scheduled_date ? 1 : -1))
-  }, [posts, activePlatform, pillarFilter, statusFilter])
+  }, [posts, activePlatform, pillarFilter])
 
   const grouped = useMemo(() => {
     const map = new Map()
@@ -52,14 +50,6 @@ export default function PlatformView({ posts, onPostClick, onStatusChange }) {
             </option>
           ))}
         </select>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="all">Todos los estatus</option>
-          {STATUSES.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.label}
-            </option>
-          ))}
-        </select>
         <span className="platform-count">{filtered.length} piezas</span>
       </div>
 
@@ -77,7 +67,6 @@ export default function PlatformView({ posts, onPostClick, onStatusChange }) {
               {items.map((p) => {
                 const pillar = PILLAR_MAP[p.pillar]
                 const fmt = FORMATS.find((f) => f.id === p.format)
-                const status = STATUS_MAP[p.status] ?? STATUSES[0]
                 return (
                   <div key={p.id} className="content-card" style={{ '--pillar-color': pillar?.color ?? '#999' }}>
                     <div className="content-card-top">
@@ -91,20 +80,6 @@ export default function PlatformView({ posts, onPostClick, onStatusChange }) {
                       {p.title}
                     </button>
                     {p.description && <p className="content-card-desc">{p.description}</p>}
-                    <div className="content-card-bottom">
-                      <select
-                        className="status-select"
-                        style={{ '--status-color': status.color }}
-                        value={p.status}
-                        onChange={(e) => onStatusChange(p.id, e.target.value)}
-                      >
-                        {STATUSES.map((s) => (
-                          <option key={s.id} value={s.id}>
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
                   </div>
                 )
               })}

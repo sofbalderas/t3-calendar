@@ -13,7 +13,7 @@ import {
   YAxis,
 } from 'recharts'
 import { format, startOfWeek } from 'date-fns'
-import { FORMATS, PILLARS, PILLAR_MAP, STATUSES } from '../lib/constants'
+import { FORMATS, PILLARS, PILLAR_MAP } from '../lib/constants'
 
 function StatCard({ label, value, sub }) {
   return (
@@ -43,13 +43,6 @@ export default function StatsView({ posts }) {
     })).filter((d) => d.value > 0)
   }, [posts])
 
-  const statusData = useMemo(() => {
-    return STATUSES.map((s) => ({
-      name: s.label,
-      value: posts.filter((post) => post.status === s.id).length,
-      color: s.color,
-    }))
-  }, [posts])
 
   const weeklyCadence = useMemo(() => {
     const map = new Map()
@@ -68,13 +61,11 @@ export default function StatsView({ posts }) {
   const pilarACount = posts.filter((p) => p.pillar === 'pilar_a').length
   const pilarBCount = posts.filter((p) => p.pillar === 'pilar_b').length
   const balanceDiff = Math.abs(pilarACount - pilarBCount)
-  const publishedCount = posts.filter((p) => p.status === 'publicado').length
 
   return (
     <div className="stats-view">
       <div className="stat-cards">
         <StatCard label="Piezas totales" value={total} />
-        <StatCard label="Publicadas" value={publishedCount} sub={total ? `${Math.round((publishedCount / total) * 100)}%` : '—'} />
         <StatCard
           label="Balance Pilar A / B"
           value={`${pilarACount} / ${pilarBCount}`}
@@ -124,23 +115,6 @@ export default function StatsView({ posts }) {
               <Tooltip />
               <Bar dataKey="value" fill="#E6A93A" radius={[0, 4, 4, 0]} />
             </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="stats-panel">
-          <h3>Estatus de producción</h3>
-          <ResponsiveContainer width="100%" height={260}>
-            <PieChart>
-              <Pie data={statusData.filter((d) => d.value > 0)} dataKey="value" nameKey="name" outerRadius={95} label>
-                {statusData
-                  .filter((d) => d.value > 0)
-                  .map((entry) => (
-                    <Cell key={entry.name} fill={entry.color} />
-                  ))}
-              </Pie>
-              <Legend />
-              <Tooltip />
-            </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
