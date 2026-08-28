@@ -1,0 +1,30 @@
+{
+  "name": "Transforma 3 · Calendario de contenido",
+  "short_name": "Transforma 3",
+  "description": "Calendario de contenido de Instagram para Transforma 3",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f1f0ee",
+  "theme_color": "#474544",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
