@@ -3,19 +3,18 @@ import CalendarView from './components/CalendarView'
 import PlatformView from './components/PlatformView'
 import StatsView from './components/StatsView'
 import PostModal from './components/PostModal'
-import GenerateWeeksModal from './components/GenerateWeeksModal'
 import { usePosts } from './lib/usePosts'
 
 const TABS = [
   { id: 'calendar', label: 'Calendario' },
+  { id: 'platform', label: 'Instagram' },
   { id: 'stats', label: 'Estadísticas' },
 ]
 
 export default function App() {
-  const { posts, loading, error, createPost, updatePost, deletePost, createMany } = usePosts()
+  const { posts, loading, error, createPost, updatePost, deletePost } = usePosts()
   const [tab, setTab] = useState('calendar')
   const [modalOpen, setModalOpen] = useState(false)
-  const [genModalOpen, setGenModalOpen] = useState(false)
   const [activePost, setActivePost] = useState(null)
   const [defaultDate, setDefaultDate] = useState(null)
 
@@ -44,10 +43,6 @@ export default function App() {
     setModalOpen(false)
   }
 
-  const handleStatusChange = async (id, status) => {
-    await updatePost(id, { status })
-  }
-
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -72,9 +67,6 @@ export default function App() {
         </nav>
 
         <div className="app-actions">
-          <button className="btn btn-ghost" onClick={() => setGenModalOpen(true)}>
-            Generar ritmo
-          </button>
           <button className="btn btn-primary" onClick={() => openNewPost()}>
             + Nueva publicación
           </button>
@@ -99,7 +91,7 @@ export default function App() {
               <CalendarView posts={posts} onDayClick={openNewPost} onPostClick={openEditPost} />
             )}
             {tab === 'platform' && (
-              <PlatformView posts={posts} onPostClick={openEditPost} onStatusChange={handleStatusChange} />
+              <PlatformView posts={posts} onPostClick={openEditPost} />
             )}
             {tab === 'stats' && <StatsView posts={posts} />}
           </>
@@ -113,12 +105,6 @@ export default function App() {
         onDelete={handleDelete}
         post={activePost}
         defaultDate={defaultDate}
-      />
-
-      <GenerateWeeksModal
-        open={genModalOpen}
-        onClose={() => setGenModalOpen(false)}
-        onGenerate={createMany}
       />
     </div>
   )
